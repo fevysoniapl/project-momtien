@@ -1,8 +1,10 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
+import { Link } from '@inertiajs/vue3';
 
 const isLoggedIn = ref(false);
+
 
 // Cek status login ketika aplikasi di-mount
 onMounted(async () => {
@@ -15,10 +17,10 @@ onMounted(async () => {
 });
 
 // Fungsi logout
-async function logout() {
+async function handleLogout() {
     try {
-        await axios.post('/logout'); // Kirim permintaan POST ke /logout
-        isLoggedIn.value = false;    // Set status isLoggedIn ke false setelah logout
+        await axios.post('/logout');
+        window.location.href = '/login';
     } catch (error) {
         console.error('Error during logout:', error);
     }
@@ -33,17 +35,18 @@ async function logout() {
         <h1 class="my-auto font-heading italic">Mom Tien</h1>
       </div>
       <nav class="flex gap-2 items-start self-stretch my-auto font-medium whitespace-nowrap text-stone-800">
-        <a href="/" class="gap-2.5 self-stretch px-4 py-1 hover:bg-stone-300 rounded-[34px]">Home</a>
-        <a href="/menu" class="gap-2.5 self-stretch px-4 py-1 hover:bg-stone-300 rounded-[34px]">Menu</a>
-        <a href="/contact" class="gap-2.5 self-stretch px-4 py-1 hover:bg-stone-300 rounded-[34px]">Contact</a>
+        <Link href="/" class="gap-2.5 self-stretch px-4 py-1 hover:bg-stone-300 rounded-[34px]">Home</Link>
+        <Link href="/menu" class="gap-2.5 self-stretch px-4 py-1 hover:bg-stone-300 rounded-[34px]">Menu</Link>
+        <Link href="/order-history" class="gap-2.5 self-stretch px-4 py-1 hover:bg-stone-300 rounded-[34px]">Order History</Link>
+        <Link href="/contact" class="gap-2.5 self-stretch px-4 py-1 hover:bg-stone-300 rounded-[34px]">Contact</Link>
       </nav>
 
       <div>
-        <a v-if="!isLoggedIn" href="/login">
+        <Link v-if="!isLoggedIn" href="/login">
           <button class="gap-2.5 self-stretch px-6 py-3 my-auto font-bold text-right text-gray-900 whitespace-nowrap border-solid border-[1.5px] hover:bg-stone-800 hover:text-white border-stone-800 rounded-[118px] max-md:px-5">
             Login
           </button>
-        </a>
+        </Link>
         <button v-else @click="handleLogout" class="gap-2.5 self-stretch px-6 py-3 my-auto font-bold text-right text-gray-900 whitespace-nowrap border-solid border-[1.5px] hover:bg-stone-800 hover:text-white border-stone-800 rounded-[118px] max-md:px-5">
           Logout
         </button>

@@ -1,5 +1,5 @@
-  <script setup>
-
+<script setup>
+import { Link } from '@inertiajs/vue3';
 </script>
 
 <template>
@@ -50,13 +50,16 @@
             <h2 data-layername="pages" class="font-bold text-white mb-4">Pages</h2>
             <ul data-layername="list" class="flex flex-col text-stone-300 space-y-3">
               <li data-layername="home">
-                <a href="/" class="hover:underline">Home</a>
+                <Link href="/" class="hover:underline">Home</Link>
               </li>
               <li data-layername="menu">
-                <a href="/menu" class="hover:underline">Menu</a>
+                <Link href="/menu" class="hover:underline">Menu</Link>
+              </li>
+              <li data-layername="order history">
+                <Link href="/order-history" class="hover:underline">Order History</Link>
               </li>
               <li data-layername="contact">
-                <a href="/contact" class="hover:underline">Contact</a>
+                <Link href="/contact" class="hover:underline">Contact</Link>
               </li>
             </ul>
           </div>

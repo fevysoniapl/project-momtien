@@ -1,27 +1,40 @@
 <?php
 
+use App\Http\Controllers\BookController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\MenuAdminController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\OrderController;
-use App\Http\Controllers\PembayaranController;
+use App\Http\Controllers\OrderHistoryController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Middleware\EnsureUserRole;
+use App\Models\Order;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 // Dashboard Route
-Route::middleware(['auth', 'verified'])->get('/dashboard', function () {
+Route::middleware(['auth', 'verified', EnsureUserRole::class.':admin'])->get('/dashboard', function () {
     $user = Auth::user();
     if ($user && $user->role === 'admin') {
-        return Inertia::render('DashboardView');
+        $totalIncome = Order::where('status', 'Pesanan Selesai')
+        ->groupBy('status')
+        ->select('status', DB::raw('SUM(total_price) as total_price_sum'))
+        ->first();
+        $totalOrder = Order::where('status', 'Pesanan Selesai')->count();
+        $recentOrder = Order::join('users', 'order.user_id', '=', 'users.id')->get(['order.id', 'users.name', 'order.status', 'order.total_price', 'order.created_at'])->toArray();
+        return Inertia::render('DashboardView', [
+            'income' => $totalIncome->total_price_sum,
+            'order' => $totalOrder,
+            'recentOrder' => $recentOrder
+        ]);
     }
     return redirect()->route('landing')->with('error', 'Unauthorized access.');
 })->name('dashboard');
 
 // Menu Admin Routes
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', EnsureUserRole::class.':admin'])->group(function () {
     Route::get('/menu-admin', [MenuAdminController::class, 'index'])->name('menu-admin.index');
     Route::post('/menu-admin', function () {
         $user = Auth::user();
@@ -47,6 +60,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         }
         return redirect()->route('landing')->with('error', 'Unauthorized access.');
     })->name('menu-admin.destroy');
+
+    Route::post('/edit-order', [OrderController::class, 'editOrder'])->name('admin.order.edit');
+    Route::post('/delete-order', [OrderController::class, 'deleteOrder'])->name('admin.order.delete');
 });
 
 // Landing Route
@@ -72,11 +88,15 @@ Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 // Menu Route
 Route::get('/menu', [MenuController::class, 'index'])->name('menu');
 
-// Menu Route
-Route::get('/pembayaran', [PembayaranController::class, 'index'])->name('pembayaran');
+// Book Route
+Route::post('/book', [BookController::class, 'index'])->name('book')->middleware(EnsureUserRole::class.':user');
+
+// Order History Route
+Route::get('/order-history', [OrderHistoryController::class, 'index'])->name('order-history')->middleware(EnsureUserRole::class.':user');
 
 //Kelola Order Route
-Route::get('/order', [OrderController::class, 'index'])->name('order');
+Route::get('/order', [OrderController::class, 'index'])->name('order')->middleware(EnsureUserRole::class.':admin');
+Route::post('/order', [BookController::class, 'store'])->name('user.order.book')->middleware(EnsureUserRole::class.':user');
 
 // Profile Routes
 Route::middleware('auth')->group(function () {

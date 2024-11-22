@@ -1,29 +1,62 @@
 <script setup lang="ts">
 import AdminLayout from '@/Layouts/AdminLayout.vue'
 import { Head } from '@inertiajs/vue3'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+
+interface Props {
+  income: any,
+  order: any,
+  recentOrder: any
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  income: 0,
+  order: 0,
+  recentOrder: []
+})
 
 // Sample data (replace with real data from backend)
 const totalOrders = ref(150)
 const totalSales = ref("205k")
-const recentOrders = ref([
-  { id: 1, customer: 'John Doe', date: '2024-10-29', total: "120k", status: 'Pesanan Selesai' },
-  { id: 2, customer: 'Jane Smith', date: '2024-10-28', total: "85k", status: 'Pesanan Diterima' },
-  // Add more orders as needed
-])
+const recentOrders = ref([])
+
+const formatDate = (date: string | Date) => {
+  const newDate = new Date(date);
+
+  const year = newDate.getFullYear();
+  let month: number | string = newDate.getMonth() + 1; // month is zero-based
+  let day: number | string = newDate.getDate();
+
+  if (day < 10) day = '0' + day;
+  if (month < 10) month = '0' + month;
+
+  return `${year}-${month}-${day}`;
+}
+
+onMounted(() => {
+  totalOrders.value = props.order
+  totalSales.value = `Rp ${props.income}`
+  recentOrders.value = props.recentOrder.map((order: any) => {
+    return {
+      id: order.id,
+      customer: order.name,
+      date: formatDate(order.created_at),
+      total: `Rp ${order.total_price}`,
+      status: order.status
+    }
+  })
+})
 </script>
 
 <template>
   <AdminLayout>
     <Head title="Dashboard" />
     <div class="flex">
-      <!-- Sidebar will be inside AdminLayout -->
-      
       <!-- Main Content -->
       <main class="flex-1 p-8">
         <!-- Dashboard Header -->
-        <section class="px-8 py-6 bg-gray-100">
-          <h1 class="text-4xl font-semibold text-gray-800">Admin Dashboard</h1>
+        <section class="px-8 py-6 bg-gray-100 rounded-xl">
+          <h1 class="text-4xl font-bold text-gray-800">Admin Dashboard</h1>
           <p class="text-gray-600 mt-2">Overview of your catering service performance</p>
         </section>
 
@@ -33,7 +66,7 @@ const recentOrders = ref([
           <div class="bg-white p-6 rounded-lg shadow-md flex items-center">
             <div class="flex-grow">
               <h2 class="text-xl font-bold text-gray-800">Total Pemasukan</h2>
-              <p class="text-gray-500">{{ totalOrders }}</p>
+              <p class="text-gray-500">{{ totalSales }}</p>
             </div>
             <img src="@/assets/images/logo/icon-phone.png" alt="Orders icon" class="w-12 h-12">
           </div>
@@ -42,7 +75,7 @@ const recentOrders = ref([
           <div class="bg-white p-6 rounded-lg shadow-md flex items-center">
             <div class="flex-grow">
               <h2 class="text-xl font-bold text-gray-800">Total Pesanan Masuk</h2>
-              <p class="text-gray-500">{{ totalSales }}</p>
+              <p class="text-gray-500">{{ totalOrders }}</p>
             </div>
             <img src="@/assets/images/logo/icon-phone.png" alt="Sales icon" class="w-12 h-12">
           </div>

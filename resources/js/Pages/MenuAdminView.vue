@@ -1,5 +1,6 @@
 <template>
     <AdminLayout>
+        <Head title="Menu Admin"/>
         <section class="menu-section">
             <header class="menu-header">
                 <h1 class="menu-title font-bold font-heading">Manage Menu</h1>
@@ -22,8 +23,8 @@
 
             <!-- List Menu Items in Table -->
             <div>
-                <h2>Daftar Menu</h2>
-                <table class="min-w-full border-collapse">
+                <h2 class="text-xl font-bold text-center">Daftar Menu</h2>
+                <table class="min-w-full mt-6 border-collapse">
                     <thead>
                         <tr>
                             <th class="border px-4 py-2">Gambar</th>
@@ -37,7 +38,7 @@
                         <tr v-for="menu in menuItems" :key="menu.id">
                             <td class="border px-4 py-2">
                                 <!-- Menampilkan gambar menggunakan path -->
-                                <img v-if="menu.image" :src="`/storage/${menu.image}`" alt="Image"
+                                <img :src="`/storage/${menu.image}`" alt="Image"
                                     class="w-16 h-16 object-cover" />
                             </td>
                             <td class="border px-4 py-2">{{ menu.name }}</td>
@@ -86,7 +87,7 @@
     import {
         useForm,
         usePage,
-        router
+        router, Head
     } from '@inertiajs/vue3';
     import AdminLayout from '@/Layouts/AdminLayout.vue';
 

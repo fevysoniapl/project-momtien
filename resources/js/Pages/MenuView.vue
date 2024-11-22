@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { defineProps } from 'vue';
+import { Link, Head } from '@inertiajs/vue3';
 import MainLayout from '@/Layouts/MainLayout.vue';
+import axios from 'axios';
 
 // Menerima data menuCategories dari Inertia
 const props = defineProps<{
@@ -14,27 +16,36 @@ const props = defineProps<{
     }>;
   }>;
 }>();
+
+const onViewMenu = async () => {
+  try {
+    console.log("is running")
+    const res = await axios.get('/book').then(res => console.log(res)).catch(e => console.error(e))
+  } catch (e) {
+    console.error(e)
+  }
+}
 </script>
 
 <template>
   <MainLayout>
-    <Head title=""/>
+    <Head title="Menu"/>
     <section class="menu-section">
       <header class="menu-header">
         <h1 class="menu-title font-bold font-heading">Daftar Menu</h1>
       </header>
       
-      <div v-for="(category, index) in props.menuCategories" :key="index" class="menu-category">
+      <div v-for="(category, index) in props.menuCategories" :key="index" class="menu-category" >
         <h2 class="category-title font-semibold">{{ category.name }}</h2>
         
-        <div v-for="(item, idx) in category.items" :key="idx" class="menu-item">
-          <img :src="item.image" alt="Image of {{ item.name }}" class="item-image" />
-          <div class="item-details">
-            <h3 class="item-name">{{ item.name }}</h3>
-            <p class="item-description">{{ item.description }}</p>
-            <p class="item-price">{{ item.price }}</p>
-          </div>
-        </div>
+            <Link href="/book" method="post" :data="{ menu: item }" v-for="(item, idx) in category.items" :key="idx" class="menu-item">
+            <img :src="item.image" alt="Image of {{ item.name }}" class="item-image" />
+            <div class="item-details">
+              <h3 class="item-name">{{ item.name }}</h3>
+              <p class="item-description">{{ item.description }}</p>
+              <p class="item-price">{{ item.price }}</p>
+            </div>
+          </Link> 
       </div>
     </section>
   </MainLayout>

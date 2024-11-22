@@ -1,6 +1,7 @@
 <script setup>
 import MainLayout from '@/Layouts/MainLayout.vue';
 import { ref } from 'vue';
+import { Head } from '@inertiajs/vue3';
 
 const name = ref('');
 const email = ref('');
@@ -10,13 +11,9 @@ const message = ref('');
 const sendWhatsAppMessage = () => {
   const phoneNumber = '6281327495481';
   
-  const textMessage = `Hello! I’d like to reach out:%0A%0A 
-                      *Name:* ${name.value}%0A 
-                      *Email:* ${email.value}%0A 
-                      *Subject:* ${subject.value}%0A 
-                      *Message:*%0A${message.value}`;
+  const textMessage = `Hello! I’d like to reach out:\n\n *Name:* ${name.value}\n *Email:* ${email.value}\n *Subject:* ${subject.value}\n *Message:*\n${message.value}`;
   
-  const apiUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${textMessage}`;
+  const apiUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(textMessage)}`;
   
   window.open(apiUrl, '_blank');
 };

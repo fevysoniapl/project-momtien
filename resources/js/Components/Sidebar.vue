@@ -14,24 +14,24 @@
     <!-- Sidebar Menu Links -->
     <ul class="space-y-4 px-4">
       <li>
-        <a href="/dashboard"
+        <Link href="/dashboard"
            class="flex items-center py-2 px-4 hover:bg-gray-700 rounded-md transition duration-200 ease-in-out">
           <i class="fas fa-tachometer-alt mr-3"></i> Dashboard
-        </a>
+        </Link>
       </li>
       
       <li>
-        <a href="/order"
+        <Link href="/order"
            class="flex items-center py-2 px-4 hover:bg-gray-700 rounded-md transition duration-200 ease-in-out">
           <i class="fas fa-box-open mr-3"></i> Kelola Order
-        </a>
+        </Link>
       </li>
       
       <li>
-        <a href="/menu-admin"
+        <Link href="/menu-admin"
            class="flex items-center py-2 px-4 hover:bg-gray-700 rounded-md transition duration-200 ease-in-out">
           <i class="fas fa-utensils mr-3"></i> Menu
-        </a>
+        </Link>
       </li>
 
       <li>
@@ -48,19 +48,17 @@
 </template>
 
 <script setup>
+import { Link } from '@inertiajs/vue3';
 // No additional logic is required for this update
-import { useRouter } from 'vue-router';
-
-
-const router = useRouter();
 
 // Function to handle logout action
-const logout = () => {
-  // Clear any authentication tokens or session
-  localStorage.removeItem('authToken'); // Or any other method of clearing auth data
-
-  // Redirect to login page
-  router.push('/login');  // Redirect to login page or wherever appropriate
+const logout = async () => {
+  try {
+        await axios.post('/logout');
+        window.location.href = '/login';
+    } catch (error) {
+        console.error('Error during logout:', error);
+    }
 };
 
 </script>

@@ -30,12 +30,12 @@ class LoginController extends Controller
             if ($role === 'admin') {
                 return redirect()->route('dashboard');
             } else if ($role === 'user') {
-                return redirect()->route('home');
+                return redirect()->route('landing');
             }
         }
 
         // Redirect back with an error if login fails
-        return back()->withErrors([
+        return redirect()->back()->withErrors([
             'email' => 'Email or password is incorrect.',
         ]);
     }

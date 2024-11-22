@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import { Link, Head } from '@inertiajs/vue3';
+import axios from 'axios';
+import MainLayout from '@/Layouts/MainLayout.vue';
 
 
 // Define types and sample menu items
@@ -11,85 +14,96 @@ type MenuItem = {
   quantity: number;
 };
 
-const menuItems = ref<MenuItem[]>([
-  { id: 1, name: "Ayam Bakar MomTien", price: 18000, description: "Delicious grilled chicken", quantity: 0 },
-  { id: 2, name: "Lele Goreng Kremes", price: 15000, description: "Crispy fried catfish", quantity: 0 },
-  { id: 3, name: "Gurame Bakar", price: 57000, description: "Grilled carp fish with special spices", quantity: 0 },
-]);
+interface Props {
+  menu: any
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  menu: null
+})
+
+const targetUrl = ref('');
 
 // Selected items for the booking
 const selectedItems = ref<MenuItem[]>([]);
-
-// Add item to the booking list
-const addItemToBooking = (item: MenuItem) => {
-  const existingItem = selectedItems.value.find((i) => i.id === item.id);
-  if (existingItem) {
-    existingItem.quantity += 1;
-  } else {
-    selectedItems.value.push({ ...item, quantity: 1 });
-  }
-};
 
 // Calculate total price
 const calculateTotal = () => {
   return selectedItems.value.reduce((total, item) => total + item.price * item.quantity, 0);
 };
 
-// Remove an item from booking
-const removeItem = (id: number) => {
-  selectedItems.value = selectedItems.value.filter(item => item.id !== id);
+const isSaved = ref(false);
+
+// Save database
+const save = () => {
+  isSaved.value = true;
+  try { 
+    axios.post('/order', selectedItems.value[0]).then(res => targetUrl.value = res.data.url).catch(e => console.error(e))
+   } catch (e) {
+    console.error(e)
+   }
 };
 
-// Handle checkout (COD or Payment Gateway)
-const checkout = (method: string) => {
-  alert(Checking out with ${method}. Total Price: Rp${calculateTotal()});
+const checkout = (item: any) => {
+  const phoneNumber = '6281327495481';
+  const textMessage = `Total Payment: Rp${calculateTotal()}.\nYour order details:\n${item.name} - Quantity: ${item.quantity} - Price: Rp${item.price * item.quantity}\nPlease confirm your payment with us.`;
+  const apiUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(textMessage)}`;
+
+  window.open(apiUrl, '_blank');
+  window.location.replace(targetUrl.value)
 };
+
+onMounted(() => {
+  const menu = { ...props.menu, quantity: 0 }
+  selectedItems.value.push(menu)
+});
+
 </script>
 
 <template>
-  
+  <MainLayout>
+    <Head title="Order Menu"/>
     <section class="book-table-section">
-      <header class="book-table-header">
-        <h1>Book a Table</h1>
+      <header class="book-table-header text-3xl font-semibold font-heading">
+        <h1>🍽️ Order Menu</h1>
       </header>
 
       <!-- Selected Items Display -->
-      <div v-if="selectedItems.length > 0">
-        <h2>Your Selection</h2>
+      <div v-if="selectedItems.length">
         <div v-for="item in selectedItems" :key="item.id" class="selected-item">
-          <h3>{{ item.name }}</h3>
-          <p>{{ item.description }}</p>
-          <p>Price: Rp{{ item.price }}</p>
+          <h3 class="text-xl font-semibold text-x-orange">{{ item.name }}</h3>
+          <p class="opacity-70">{{ item.description }}</p>
+          <p>Price: <strong>Rp{{ item.price }}</strong></p>
           
           <!-- Quantity Selector -->
           <label>
             Quantity:
-            <input type="number" v-model.number="item.quantity" min="1" />
+            <input type="number" v-model.number="item.quantity" min="1" :disabled="isSaved" class="quantity-input"/>
           </label>
 
-          <!-- Remove Item Button -->
-          <button @click="removeItem(item.id)">Remove</button>
         </div>
 
         <!-- Total Price -->
-        <div class="total-price">
+        <div class="total-price text-xl">
           <h3>Total Price: Rp{{ calculateTotal() }}</h3>
         </div>
 
-        <!-- Checkout Options -->
-        <div class="checkout-options">
-          <button @click="checkout('COD')">Checkout with COD</button>
-          <button @click="checkout('Payment Gateway')">Checkout with Payment Gateway</button>
+        <!-- Button -->
+        <div class="flex justify-center gap-4 mt-5">
+          <button @click="save" :disabled="isSaved" class="px-5 py-2 font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-500 disabled:bg-gray-300 disabled:cursor-not-allowed">Save</button>
+          <button @click="checkout(selectedItems[0])" :disabled="!isSaved" class="px-5 py-2 font-semibold text-white bg-orange-600 rounded-lg hover:bg-orange-500 disabled:bg-gray-300 disabled:cursor-not-allowed">
+            Checkout
+          </button>
         </div>
       </div>
 
       <!-- Empty State if no items selected -->
       <div v-else>
         <p>No items selected. Please add items from the menu.</p>
-        <button @click="$emit('backToMenu')">Back to Menu</button>
+        <Link href="/menu" as="button" >Back to Menu</Link>
       </div>
     </section>
-  
+  </MainLayout>
 </template>
 
 <style scoped>
@@ -106,35 +120,27 @@ const checkout = (method: string) => {
 
 .selected-item {
   border: 1px solid #e5e5e5;
-  padding: 10px;
-  border-radius: 5px;
+  padding: 20px;
+  border-radius: 15px;
   margin-bottom: 15px;
 }
 
 .total-price {
-  font-size: 1.5rem;
   font-weight: bold;
   margin-top: 20px;
   text-align: right;
 }
 
-.checkout-options {
-  display: flex;
-  gap: 10px;
-  margin-top: 20px;
+.quantity-input {
+  width: 50px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
-button {
-  padding: 10px;
-  font-size: 1rem;
-  color: #fff;
-  background-color: #f76c6c;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+.quantity-input:focus {
+  outline: none;
+  border-color: #e67e22;
 }
 
-button:hover {
-  background-color: #e55a5a;
-}
 </style>

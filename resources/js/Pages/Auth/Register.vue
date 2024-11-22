@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useForm } from '@inertiajs/vue3';
+import { useForm, Head } from '@inertiajs/vue3';
 
 // Initialize form using useForm hook
 const form = useForm({
@@ -19,9 +19,10 @@ const submit = () => {
 </script>
 
 <template>
+  <Head title="Register"/>
   <main data-layername="registrasi" class="flex flex-col items-center justify-center min-h-screen bg-stone-50">
     <section data-layername="logoMomTien" class="flex flex-col items-center w-full px-5 pt-16 pb-8 max-w-5xl">
-      <h1 data-layername="cuisine" class="text-4xl text-heading font-semibold tracking-tight leading-none text-zinc-700 mb-8 max-md:text-3xl">
+      <h1 data-layername="cuisine" class="text-4xl italic font-heading font-semibold tracking-tight leading-none text-zinc-700 mb-8 max-md:text-3xl">
         Welcome to Mom Tien
       </h1>
       <div class="flex gap-10 w-full max-md:flex-col items-center">

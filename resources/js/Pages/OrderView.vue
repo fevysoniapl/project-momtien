@@ -1,142 +1,126 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import { Head, useForm } from '@inertiajs/vue3';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
+import axios from 'axios';
 
 // Sample data for orders (from Book a Table)
 type Order = {
   id: number;
   customerName: string;
   items: { name: string; quantity: number }[]; // Added items array with name, quantity, and price
-  stages: { name: string; description: string; completed: boolean }[];
+  stages?: { name: string; description: string; completed: boolean }[];
+  status?: string;
+  isEdit: boolean 
 };
 
-const orders = ref<Order[]>([
-  {
-    id: 1,
-    customerName: "John Doe",
-    items: [
-      { name: "Pizza", quantity: 2 },
-      { name: "Pasta", quantity: 1 },
-    ],
-    stages: [
-      { name: "Order Received", description: "Order has been received.", completed: true },
-      { name: "Being Prepared", description: "Food is being prepared.", completed: false },
-      { name: "Order Completed", description: "Order is ready for delivery.", completed: false },
-    ],
-  },
-  {
-    id: 2,
-    customerName: "Jane Smith",
-    items: [
-      { name: "Burger", quantity: 1,  },
-      { name: "Fries", quantity: 2,  },
-    ],
-    stages: [
-      { name: "Order Received", description: "Order has been received.", completed: true },
-      { name: "Being Prepared", description: "Food is being prepared.", completed: true },
-      { name: "Order Completed", description: "Order is ready for delivery.", completed: false },
-    ],
-  },
-]);
+interface Props {
+  data: any
+}
 
-// Update stage status for a particular order
-const toggleStageCompletion = (orderIndex: number, stageIndex: number) => {
-  orders.value[orderIndex].stages[stageIndex].completed = !orders.value[orderIndex].stages[stageIndex].completed;
-};
+const props = withDefaults(defineProps<Props>(), {
+  data: []
+})
 
+const status = ref(['Menunggu Pembayaran', 'Pesanan Diterima', 'Sedang Dimasak', 'Pesanan Selesai'])
+
+const orders = ref<Order[]>([]);
+
+const updateStatus = (id: number | string) => {
+  const arrId = orders.value.findIndex((order: any) => (order.id === id));
+  orders.value[arrId].isEdit = false;
+
+  axios.post('/edit-order', { status: orders.value[arrId].status, id: id })
+    .then(res => orders.value = res.data.data.map((order: any) => ({ 
+      id: order.id, 
+      customerName: order.customerName,
+      items: [
+        { name: order.name, quantity: order.quantity }
+      ],
+      status: order.status,
+      isEdit: false
+    })))
+}
+
+const onEditOrCancel = (isEdit: boolean, id: number | string, status: string) => {
+  const arrId = orders.value.findIndex((order: any) => (order.id === id));
+  orders.value[arrId].isEdit = !isEdit;
+
+  if (isEdit) {
+    orders.value[arrId].status = status;
+  }
+}
+
+const onDelete = (id: number | string) => {
+  axios.post('delete-order', { id: id })
+    .then(res => orders.value = res.data.data.map((order: any) => ({ 
+      id: order.id, 
+      customerName: order.customerName,
+      items: [
+        { name: order.name, quantity: order.quantity }
+      ],
+      status: order.status,
+      isEdit: false
+    })))
+}
+
+onMounted(() => {
+  props.data.forEach((item: any) => {
+    const itemOrdered = { 
+      id: item.id, 
+      customerName: item.customerName,
+      items: [
+        { name: item.name, quantity: item.quantity }
+      ],
+      status: item.status,
+      isEdit: false
+    };
+    orders.value.push(itemOrdered)
+  })
+})
 </script>
 
 <template>
   <AdminLayout>
-    <section class="admin-track-order-section">
-      <header class="admin-track-order-header">
-        <h1 class="text-2xl font-bold font-heading">Kelola Pesanan</h1>
+    <Head title="Order"/>
+    <section class="p-6 max-w-3xl mx-auto">
+      <header class="text-center mb-8">
+        <h1 class="text-2xl font-semibold text-gray-800 font-heading">Kelola Pesanan</h1>
       </header>
 
       <!-- Orders Management -->
-      <div v-for="(order, orderIndex) in orders" :key="order.id" class="order-card">
-        <h2>Pesanan #{{ order.id }} - {{ order.customerName }}</h2>
+      <div v-for="(order, orderKey) in orders" :key="order.id" class="bg-white p-6 mb-6 rounded-lg shadow-md border border-gray-200">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-xl font-medium text-gray-800">Pesanan #{{ order.id }} - {{ order.customerName }}</h2>
+          <button class="bg-red-500 text-white px-4 py-2 rounded hover:bgred-600" @click="onDelete(order.id)">Delete</button>
+      </div>
 
-        <!-- Show ordered items -->
-        <div class="order-items">
-          <h3>Items Ordered:</h3>
-          <div v-for="(item, itemIndex) in order.items" :key="itemIndex" class="order-item">
-            <p>{{ item.name }} - Quantity: {{ item.quantity }}  </p>
-          </div>
+      <!-- Show ordered items -->
+      <div class="mt-4 text-base text-gray-700">
+        <h3 class="font-bold text-gray-800">Items Ordered:</h3>
+        <div v-for="(item, itemIndex) in order.items" :key="itemIndex" class="order-item">
+          <p>{{ item.name }} - Quantity: {{ item.quantity }}  </p>
         </div>
+      </div>
 
-        
+      <!-- Order Status -->
+      <div class="flex items-center gap-4 mt-4">
+        <label class="font-semibold text-gray-800">Status:</label>
+        <select v-model="orders[orderKey].status" class="border border-gray-300 rounded-md p-2 text-base" :disabled="!order.isEdit">
+          <option :selected="order.status === 'Menunggu Pembayaran'">Menunggu Pembayaran</option>
+          <option :selected="order.status === 'Pesanan Diterima'">Pesanan Diterima</option>
+          <option :selected="order.status === 'Sedang Dimasak'">Sedang Dimasak</option>
+          <option :selected="order.status === 'Pesanan Selesai'">Pesanan Selesai</option>
+        </select>
+        <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" @click="onEditOrCancel(order.isEdit, order.id, order.status)">{{ order.isEdit ? 'Batal' : 'Edit' }}</button>
+        <button @click="updateStatus(order.id)" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 disabled:!cursor-not-allowed" :disabled="!order.isEdit">Save</button>
+      </div>
 
-        <!-- Show stages of the order -->
-        <div v-for="(stage, stageIndex) in order.stages" :key="stageIndex" class="order-stage">
-          <div class="stage-info">
-            <h3>{{ stage.name }}</h3>
-            <p>{{ stage.description }}</p>
-          </div>
-
-          <!-- Toggle Completion Checkbox -->
-          <label>
-            <input type="checkbox" :checked="stage.completed" @change="toggleStageCompletion(orderIndex, stageIndex)" />
-            Completed
-          </label>
-        </div>
       </div>
     </section>
   </AdminLayout>
 </template>
 
 <style scoped>
-.admin-track-order-section {
-  padding: 20px;
-  max-width: 700px;
-  margin: auto;
-}
 
-.admin-track-order-header {
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-.order-card {
-  background-color: #f8f9fa;
-  padding: 15px;
-  margin-bottom: 20px;
-  border-radius: 8px;
-}
-
-.order-items {
-  margin-top: 10px;
-}
-
-.order-item p {
-  margin: 5px 0;
-}
-
-.total-price {
-  margin-top: 10px;
-  font-weight: bold;
-}
-
-.order-stage {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 10px;
-  padding: 10px;
-  border: 1px solid #e5e5e5;
-  border-radius: 5px;
-  background-color: #fff;
-}
-
-.stage-info h3 {
-  margin: 0;
-  font-size: 1.1rem;
-  color: #333;
-}
-
-.stage-info p {
-  margin: 5px 0 0;
-  font-size: 0.9rem;
-  color: #555;
-}
 </style>

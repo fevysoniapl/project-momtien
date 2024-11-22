@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import MainLayout from '../Layouts/MainLayout.vue'
-import {Head} from '@inertiajs/vue3'
+import MainLayout from '../Layouts/MainLayout.vue';
+import { Head, Link } from '@inertiajs/vue3';
 </script>
 
 <template>
@@ -16,11 +16,11 @@ import {Head} from '@inertiajs/vue3'
           <p class="mt-4 leading-7 w-[599px] text-center max-md:max-w-full font-sans">
             Nikmati hidangan lezat dan momen tak terlupakan di catering kami yang hangat dan ramah.
           </p>
-          <a href="/menu">
+          <Link href="/menu">
             <button class="mt-4 gap-2.5 px-6 py-3 my-auto font-bold text-center text-gray-900 whitespace-nowrap border-solid border-[1.5px] hover:bg-stone-800 hover:text-white border-stone-800 rounded-[118px] max-md:px-5">
               Menu
             </button>
-          </a>
+          </Link>
         </div>
       </section>
 

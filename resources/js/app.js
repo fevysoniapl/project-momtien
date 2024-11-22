@@ -16,11 +16,10 @@ createInertiaApp({
             import.meta.glob('./Pages/**/*.vue'),
         ),
     setup({ el, App, props, plugin }) {
-        // Membuat aplikasi Vue dan menggunakannya bersama plugin Inertia
         return createApp({ render: () => h(App, props) })
-            .use(plugin) // Menggunakan plugin Inertia
-            .use(ZiggyVue) // Menambahkan ZiggyVue
-            .mount(el); // Memasang aplikasi di elemen dengan ID 'app'
+            .use(plugin)
+            .use(ZiggyVue)
+            .mount(el);
     },
     progress: {
         color: '#4B5563',

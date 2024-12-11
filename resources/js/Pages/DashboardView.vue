@@ -51,6 +51,7 @@ onMounted(() => {
   mostOrderedSale.value = props.mostOrdered.map((menu: any) =>{
     return {
       menu: menu.name,
+      image: menu.image,
       count: menu.count
     }
   })
@@ -71,26 +72,34 @@ onMounted(() => {
         </section>
 
         <!-- Dashboard Summary Cards -->
-        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 p-8">
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 py-8">
           <!-- Total Orders Card -->
-          <div class="bg-white p-6 rounded-lg shadow-md flex items-center">
+          <div class="bg-white p-6 rounded-lg shadow-md flex h-1/2 items-center">
             <div class="flex-grow">
               <h2 class="text-xl font-bold text-gray-800">Total Pemasukan</h2>
               <p class="text-gray-500">{{ totalSales }}</p>
             </div>
-            <img src="@/assets/images/logo/icon-phone.png" alt="Orders icon" class="w-12 h-12">
           </div>
 
           <!-- Total Sales Card -->
-          <div class="bg-white p-6 rounded-lg shadow-md flex items-center">
+          <div class="bg-white p-6 rounded-lg shadow-md flex h-1/2 items-center">
             <div class="flex-grow">
               <h2 class="text-xl font-bold text-gray-800">Total Pesanan Masuk</h2>
               <p class="text-gray-500">{{ totalOrders }}</p>
             </div>
-            <img src="@/assets/images/logo/icon-phone.png" alt="Sales icon" class="w-12 h-12">
           </div>
 
-          <!-- More summary cards can be added here -->
+          <!-- Most Ordered Card -->
+          <div class="bg-white text-gray-800 p-6 rounded-lg shadow-md flex flex-col space-y-4 h-auto w-96">
+            <h2 class="text-xl font-bold">Menu Terpopuler</h2>
+            <div v-for="menu in mostOrderedSale" :key="menu.name" class="flex items-center space-x-4">
+              <img :src="`/storage/${menu.image}`" alt="Image" class="w-14 h-14 rounded-lg object-cover bg-gray-200" />
+              <div class="flex flex-col">
+                <h3 class="text-lg font-medium">{{ menu.menu }}</h3>
+                <p class="text-sm text-gray-600">Dipesan {{ menu.count }} kali</p>
+              </div>
+            </div>
+          </div>
         </section>
 
         <!-- Recent Orders Table -->

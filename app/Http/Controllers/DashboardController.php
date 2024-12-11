@@ -33,10 +33,11 @@ class DashboardController extends Controller
             // Most ordered
             $mostOrdered = Order::join('menu_items', 'order.menu_item_id', '=', 'menu_items.id')
                 ->where('order.status', 'Pesanan Selesai')
-                ->select('menu_items.name', DB::raw('COUNT(order.menu_item_id) as count'))
-                ->groupBy('menu_items.name')
+                ->select('menu_items.name', 'menu_items.image', DB::raw('COUNT(order.menu_item_id) as count'))
+                ->groupBy('menu_items.name', 'menu_items.image')
                 ->orderByDesc('count')
-                ->get(['menu_items.name', 'count'])
+                ->take(3)
+                ->get(['menu_items.name', 'menu_items.image', 'count'])
                 ->toArray();
 
             // Kirim data ke view

@@ -31,8 +31,7 @@ class MenuController extends Controller
             ],
         ]);
 
-        // Kembalikan data dalam format JSON untuk digunakan oleh frontend
-        return response()->json($menuItems);
+        
     }
 }
 ?>

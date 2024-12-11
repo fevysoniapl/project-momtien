@@ -7,31 +7,15 @@ use App\Http\Controllers\MenuAdminController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderHistoryController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Middleware\EnsureUserRole;
-use App\Models\Order;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 // Dashboard Route
-Route::middleware(['auth', 'verified', EnsureUserRole::class.':admin'])->get('/dashboard', function () {
-    $user = Auth::user();
-    if ($user && $user->role === 'admin') {
-        $totalIncome = Order::where('status', 'Pesanan Selesai')
-        ->groupBy('status')
-        ->select('status', DB::raw('SUM(total_price) as total_price_sum'))
-        ->first();
-        $totalOrder = Order::where('status', 'Pesanan Selesai')->count();
-        $recentOrder = Order::join('users', 'order.user_id', '=', 'users.id')->get(['order.id', 'users.name', 'order.status', 'order.total_price', 'order.created_at'])->toArray();
-        return Inertia::render('DashboardView', [
-            'income' => $totalIncome->total_price_sum,
-            'order' => $totalOrder,
-            'recentOrder' => $recentOrder
-        ]);
-    }
-    return redirect()->route('landing')->with('error', 'Unauthorized access.');
-})->name('dashboard');
+Route::middleware(['auth', 'verified', EnsureUserRole::class.':admin'])->get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 // Menu Admin Routes
 Route::middleware(['auth', 'verified', EnsureUserRole::class.':admin'])->group(function () {

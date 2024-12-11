@@ -29,7 +29,8 @@ import { Link } from '@inertiajs/vue3';
             <span class="whitespace-nowrap font-heading italic">Mom Tien</span>
           </div>
 
-          <div
+          <a
+            href="https://www.instagram.com/momtien_management"
             data-layername="social"
             class="flex gap-3 items-start mt-8"
           >
@@ -39,7 +40,7 @@ import { Link } from '@inertiajs/vue3';
               class="object-contain aspect-square w-9"
               alt="Social Media Icon"
             />
-          </div>
+          </a>
         </div>
 
         <nav

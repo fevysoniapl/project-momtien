@@ -5,7 +5,7 @@ import FooterContent from '@/Components/FooterContent.vue'
 
 <template>
   <HeaderContent/>
-  <main>
+  <main class="mt-[80px]">
     <slot></slot>
   </main>
   <FooterContent/>

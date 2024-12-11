@@ -6,19 +6,22 @@ import { onMounted, ref } from 'vue'
 interface Props {
   income: any,
   order: any,
-  recentOrder: any
+  recentOrder: any,
+  mostOrdered: any
 }
 
 const props = withDefaults(defineProps<Props>(), {
   income: 0,
   order: 0,
-  recentOrder: []
+  recentOrder: [],
+  mostOrdered: []
 })
 
 // Sample data (replace with real data from backend)
 const totalOrders = ref(150)
 const totalSales = ref("205k")
 const recentOrders = ref([])
+const mostOrderedSale = ref([])
 
 const formatDate = (date: string | Date) => {
   const newDate = new Date(date);
@@ -45,6 +48,13 @@ onMounted(() => {
       status: order.status
     }
   })
+  mostOrderedSale.value = props.mostOrdered.map((menu: any) =>{
+    return {
+      menu: menu.name,
+      count: menu.count
+    }
+  })
+  console.log(mostOrderedSale.value)
 })
 </script>
 
@@ -102,7 +112,7 @@ onMounted(() => {
                 <td class="py-3 px-4">{{ order.customer }}</td>
                 <td class="py-3 px-4">{{ order.date }}</td>
                 <td class="py-3 px-4">{{ order.total }}</td>
-                <td :class="['py-3 px-4', order.status === 'Completed' ? 'text-green-600' : 'text-yellow-600']">
+                <td :class="['py-3 px-4', order.status === 'Pesanan Selesai' ? 'text-green-600' : 'text-yellow-600']">
                   {{ order.status }}
                 </td>
               </tr>
@@ -113,15 +123,3 @@ onMounted(() => {
     </div>
   </AdminLayout>
 </template>
-
-<style scoped>
-/* Ensure the layout has the sidebar on the left and the content on the right */
-.flex {
-  display: flex;
-}
-
-main {
-  flex: 1; /* Ensures the main content takes up remaining space */
-  padding: 16px;
-}
-</style>

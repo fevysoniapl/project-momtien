@@ -1,5 +1,5 @@
 <script setup>
-import { Head, useForm } from '@inertiajs/vue3';
+import { Head, useForm, Link } from '@inertiajs/vue3';
 import InputError from '@/Components/InputError.vue';
 
 const form = useForm({
@@ -25,7 +25,7 @@ const submit = () => {
       <div class="flex gap-10 mt-10 w-full max-md:flex-col items-start">
         <div data-layername="column" class="flex flex-col w-[50%] max-md:w-full">
           <figure data-layername="image" class="flex justify-center w-full bg-blue-100 rounded-lg h-64 max-md:w-full">
-            <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/b1eaf93f0ea7c3752cb206a372fe1f383c42992b5cb49db8310ae724b59d4d00?placeholderIfAbsent=true&apiKey=99e98c75e74449b086557677558acabb" alt="Mom Tien cuisine illustration" class="object-cover rounded-lg w-full h-full" />
+            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/b1eaf93f0ea7c3752cb206a372fe1f383c42992b5cb49db8310ae724b59d4d00?placeholderIfAbsent=true&apiKey=99e98c75e74449b086557677558acabb" alt="Mom Tien cuisine illustration" class="object-cover rounded-lg w-full h-full" />
           </figure>
         </div>
         <div data-layername="column" class="flex flex-col w-[50%] max-md:w-full">
@@ -58,7 +58,7 @@ const submit = () => {
             <InputError v-for="error in form.errors.password" class="mt-2" :message="error" />
 
             <p class="self-start mt-4 text-base">
-              Don't have an account? Please <a href="/register" class="font-bold text-blue-600">Register</a> first.
+              Don't have an account? Please <Link href="/register" class="font-bold text-blue-600">Register</Link> first.
             </p>
 
             <button
@@ -67,7 +67,7 @@ const submit = () => {
               :class="{ 'opacity-25': form.processing }"
               :disabled="form.processing"
             >
-              LOGIN
+              Login
             </button>
           </form>
         </div>

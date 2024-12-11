@@ -28,7 +28,7 @@ async function handleLogout() {
 </script>
 
 <template>
-  <nav class="flex relative fixed flex-col items-center pt-3.5 pb-6 w-full bg-white px-12 w-full h-[80px]">
+  <nav class="flex fixed z-50 flex-col items-center pt-3.5 pb-6 w-full bg-white px-12 w-full h-[80px] mt-[-80px]">
     <div class="flex flex-wrap gap-5 justify-between items-center w-full max-w-[1257px] max-md:max-w-full">
       <div class="flex gap-2 self-stretch text-5xl font-semibold tracking-tight leading-none text-zinc-700">
         <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/dc8fed7d3e4a97812eadfd65ff3c54ee8bb7e9af1dceee0bbdbe95d47b530aaf?placeholderIfAbsent=true&apiKey=f2ebbb829c064f9782725000c5a9ba86" alt="Mom Tien logo" class="object-contain shrink-0 aspect-square w-[55px]" />

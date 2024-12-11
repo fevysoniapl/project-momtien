@@ -8,9 +8,9 @@ import { Head, Link } from '@inertiajs/vue3';
     <Head title="Landing"/>
     <main class="flex-grow">
       <section class="hero relative flex flex-col w-full min-h-[700px]">
-        <img src="@/assets/images/misc/bg.png" alt="Background" class="object-cover absolute inset-0 size-full"/>
+        <img src="@/assets/images/misc/bg.png" alt="Background" class="object-cover absolute inset-0 w-full h-full"/>
         <div class="relative flex flex-col items-center px-20 py-40 w-full max-md:px-5 max-md:py-24">
-          <h1 class="font-heading text-10xl text-x-black tracking-tighter leading-[96px] w-[803px] text-center max-md:max-w-full max-md:text-4xl max-md:leading-[51px]">
+          <h1 class="font-heading text-10xl text-x-black tracking-tighter leading-[96px] w-1/2 text-center max-md:max-w-full max-md:text-4xl max-md:leading-[51px]">
             Best food for your taste
           </h1>
           <p class="mt-4 leading-7 w-[599px] text-center max-md:max-w-full font-sans">
@@ -24,7 +24,7 @@ import { Head, Link } from '@inertiajs/vue3';
         </div>
       </section>
 
-      <section class="flex flex-col justify-center items-start px-10 py-32 mt-28 ml-5 max-w-full bg-white w-[1580px] max-md:px-5 max-md:py-24 max-md:mt-10">
+      <section class="flex flex-col justify-center items-start px-10 py-32 mt-28 ml-5 max-w-full bg-white w-full max-md:px-5 max-md:py-24 max-md:mt-10">
         <div class="mb-0 w-full max-w-[1373px] max-md:mb-2.5 max-md:max-w-full">
           <div class="flex gap-5 max-md:flex-col">
             <div class="flex flex-col ml-10 relative h-[610px] w-6/12 max-md:ml-0 max-md:w-full">
@@ -71,7 +71,7 @@ import { Head, Link } from '@inertiajs/vue3';
           </h2>
           <div class="service-cards flex flex-wrap gap-6 mt-16 items-start">
             <article class="service-card flex flex-col rounded-none min-w-[240px] w-[306px]">
-              <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/5931f46f4aab1c1d175463d5e5e432271566ea8c1c733caa1fd3b4b8aaaac2be?placeholderIfAbsent=true&apiKey=f2ebbb829c064f9782725000c5a9ba86" alt="Catering service illustration" class="object-contain w-full rounded-xl aspect-[0.96]" />
+              <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/5931f46f4aab1c1d175463d5e5e432271566ea8c1c733caa1fd3b4b8aaaac2be?placeholderIfAbsent=true&apiKey=f2ebbb829c064f9782725000c5a9ba86" alt="Catering service illustration" class="object-contain w-full rounded-xl aspect-[0.96]" />
               <div class="service-text flex flex-col mt-8 max-w-full w-[280px]">
                 <h3 class="self-start text-2xl font-bold tracking-tighter leading-none text-center text-stone-800">
                   Caterings
@@ -82,7 +82,7 @@ import { Head, Link } from '@inertiajs/vue3';
               </div>
             </article>
             <article class="service-card flex flex-col rounded-none min-w-[240px] w-[306px]">
-              <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/3fd4242707358b8dc8cd5fdccf61a165cae337468a416e3abb7bd6ceaf2fc38a?placeholderIfAbsent=true&apiKey=f2ebbb829c064f9782725000c5a9ba86" alt="Birthday celebration illustration" class="object-contain w-full rounded-xl aspect-[0.96]" />
+              <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/3fd4242707358b8dc8cd5fdccf61a165cae337468a416e3abb7bd6ceaf2fc38a?placeholderIfAbsent=true&apiKey=f2ebbb829c064f9782725000c5a9ba86" alt="Birthday celebration illustration" class="object-contain w-full rounded-xl aspect-[0.96]" />
               <div class="service-text flex flex-col mt-8 max-w-full w-[280px]">
                 <h3 class="self-start text-2xl font-bold tracking-tighter leading-none text-center text-stone-800">
                   Birthdays
@@ -93,7 +93,7 @@ import { Head, Link } from '@inertiajs/vue3';
               </div>
             </article>
             <article class="service-card flex flex-col rounded-none min-w-[240px] w-[306px]">
-              <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/5099762aa4a6261854879368877c1e9ccd849c9ea7297591d9b749becf95aaa9?placeholderIfAbsent=true&apiKey=f2ebbb829c064f9782725000c5a9ba86" alt="Wedding catering illustration" class="object-contain w-full rounded-xl aspect-[0.96]" />
+              <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/5099762aa4a6261854879368877c1e9ccd849c9ea7297591d9b749becf95aaa9?placeholderIfAbsent=true&apiKey=f2ebbb829c064f9782725000c5a9ba86" alt="Wedding catering illustration" class="object-contain w-full rounded-xl aspect-[0.96]" />
               <div class="service-text flex flex-col mt-8 max-w-full w-[280px]">
                 <h3 class="self-start text-2xl font-bold tracking-tighter leading-none text-center text-stone-800">
                   Weddings
@@ -104,7 +104,7 @@ import { Head, Link } from '@inertiajs/vue3';
               </div>
             </article>
             <article class="service-card flex flex-col rounded-none min-w-[240px] w-[306px]">
-              <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/2dfe62d8b478e4e1a258013b1eeee0e9868d8c6f2cbf41cccadabe317f553712?placeholderIfAbsent=true&apiKey=f2ebbb829c064f9782725000c5a9ba86" alt="General event catering illustration" class="object-contain w-full rounded-xl aspect-[0.96]" />
+              <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/2dfe62d8b478e4e1a258013b1eeee0e9868d8c6f2cbf41cccadabe317f553712?placeholderIfAbsent=true&apiKey=f2ebbb829c064f9782725000c5a9ba86" alt="General event catering illustration" class="object-contain w-full rounded-xl aspect-[0.96]" />
               <div class="service-text flex flex-col mt-8 max-w-full w-[280px]">
                 <h3 class="self-start text-2xl font-bold tracking-tighter leading-none text-center text-stone-800">
                   Events
@@ -138,7 +138,7 @@ import { Head, Link } from '@inertiajs/vue3';
                   <hr class="mt-8 max-w-full border border-solid opacity-70 bg-stone-300 border-stone-300 min-h-[1px] w-[346px]" />
                   <div class="flex gap-5 items-center mt-8 max-w-full text-base font-bold text-stone-800 w-[211px]">
                     <div class="flex gap-5 self-stretch my-auto w-[211px]">
-                      <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/e4defb055c598a5a85d26c9e174b1a46345bcde5de5271e9954f6073341615da?placeholderIfAbsent=true&apiKey=f2ebbb829c064f9782725000c5a9ba86" alt="Profile picture of Sophire Robson" class="object-contain shrink-0 rounded-full aspect-square w-[70px]" />
+                      <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e4defb055c598a5a85d26c9e174b1a46345bcde5de5271e9954f6073341615da?placeholderIfAbsent=true&apiKey=f2ebbb829c064f9782725000c5a9ba86" alt="Profile picture of Sophire Robson" class="object-contain shrink-0 rounded-full aspect-square w-[70px]" />
                       <span class="my-auto">Sophire Robson</span>
                     </div>
                   </div>
@@ -160,7 +160,7 @@ import { Head, Link } from '@inertiajs/vue3';
                   <div class="flex gap-5 items-center mt-8 max-w-full text-base font-bold text-stone-800 w-[191px]">
                     <div class="flex flex-col self-stretch my-auto w-[191px]">
                       <div class="flex gap-5 w-full">
-                        <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/1c6ea3dc2bf298f604d0143c9be0eebefb9842dcde28bf6b71c78e7fac80f2a5?placeholderIfAbsent=true&apiKey=f2ebbb829c064f9782725000c5a9ba86" alt="Profile picture of Matt Cannon" class="object-contain shrink-0 rounded-full aspect-square w-[70px]" />
+                        <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/1c6ea3dc2bf298f604d0143c9be0eebefb9842dcde28bf6b71c78e7fac80f2a5?placeholderIfAbsent=true&apiKey=f2ebbb829c064f9782725000c5a9ba86" alt="Profile picture of Matt Cannon" class="object-contain shrink-0 rounded-full aspect-square w-[70px]" />
                         <span class="grow shrink my-auto w-[87px]">Matt Cannon</span>
                       </div>
                     </div>
@@ -182,7 +182,7 @@ import { Head, Link } from '@inertiajs/vue3';
                   <hr class="mt-8 max-w-full border border-solid opacity-70 bg-stone-300 border-stone-300 min-h-[1px] w-[346px]" />
                   <div class="flex gap-5 items-center mt-8 max-w-full text-base font-bold text-stone-800 w-[184px]">
                     <div class="flex gap-5 justify-between self-stretch my-auto w-[184px]">
-                      <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/e726f01fb64eb90c4e2a61e81b0f86838e262a886aec7f7fc3cea06f6df28d3f?placeholderIfAbsent=true&apiKey=f2ebbb829c064f9782725000c5a9ba86" alt="Profile picture of Andy Smith" class="object-contain shrink-0 rounded-full aspect-square w-[70px]" />
+                      <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e726f01fb64eb90c4e2a61e81b0f86838e262a886aec7f7fc3cea06f6df28d3f?placeholderIfAbsent=true&apiKey=f2ebbb829c064f9782725000c5a9ba86" alt="Profile picture of Andy Smith" class="object-contain shrink-0 rounded-full aspect-square w-[70px]" />
                       <span class="self-start mt-2.5">Andy Smith</span>
                     </div>
                   </div>

@@ -122,5 +122,8 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+    'recaptcha' => [
+        'secret_key' => env('VITE_RECAPTCHA_SECRET_KEY'),
+    ],
 
 ];
